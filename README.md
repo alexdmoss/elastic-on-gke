@@ -13,10 +13,15 @@ Following the instructions here: https://github.com/GoogleCloudPlatform/click-to
     - `resource` was declared twice for Elastic - delete one
     - set CPU / memory request/limits to lower values. I tried my luck with 0.1/1 CPU, then 500Mb/1Gb
     - ES_JAVA_OPTS needs changing to be under your memory value
+    - Update `storageClassName:` to be `efk-disk`
 
 2. `export NAMESPACE=${NAMESPACE} && ./deploy.sh` will apply the generated manifest
 
-I also encountered an issue with the volume claim - as far as I can tell, the PVC was binding to a node that didn't have space for the pod to run. I managed to work around this problem by defining a separate storageClass (rather than relying on default) and specifying `volumeBindingMode: WaitForFirstConsumer`, then updating the `volumeClaimTemplate` to use this.
+Note that a minimum of 2 replicas is needed for the elasticsearch StatefulSet to spin up.
+
+I encountered an issue with the volume claim - as far as I can tell, the PVC was binding to a node that didn't have space for the pod to run. I managed to work around this problem by defining a separate storageClass (rather than relying on default) and specifying `volumeBindingMode: WaitForFirstConsumer`, then updating the `volumeClaimTemplate` as above to use this.
+
+I also had to delete `efk-kibana-init-job` which got stuck in Init - re-running when everything else was up and running seems to do the trick.
 
 ## To Do
 

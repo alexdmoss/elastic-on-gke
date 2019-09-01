@@ -2,7 +2,7 @@
 
 export APP_INSTANCE_NAME=efk
 export NAMESPACE=elastic
-export ELASTICSEARCH_REPLICAS=1
+export ELASTICSEARCH_REPLICAS=2
 export METRICS_EXPORTER_ENABLED=true
 # this is the latest that Google offer it seems - 7.2 is out!
 export TAG=6.3
